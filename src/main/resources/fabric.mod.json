@@ -10,7 +10,7 @@
   "contact": {
     "homepage": "https://skinmc.net/en/p/mod"
   },
-  "license": "CC0-1.0",
+  "license": "LGPL-2.1",
   "icon": "assets/skinmc/icon.png",
   "environment": "client",
   "entrypoints": {
@@ -27,7 +27,7 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.github_releases": "https://skinmc.net/en/p/mod"
+        "modmenu.github_releases": "https://github.com/SkinMC/SkinMC-Mod/releases"
       }
     }
   }
