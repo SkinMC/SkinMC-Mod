@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/ebwcw9n.png">
+![SkinMC Mod](https://i.imgur.com/ebwcw9n.png "SkinMC Mod")
 
 # SkinMC-Mod
 SkinMC Mod allows players to upload a custom cape using the SkinMC website which will be shown in-game. 
@@ -12,14 +12,28 @@ SkinMC Mod allows players to upload a custom cape using the SkinMC website which
 ## How to get a cape
 1. Go to https://skinmc.net
 2. Sign up / Sign in
-3. Link your Minecraft account via Microsoft
-4. Go to `Account`, then choose `SkinMC Capes`
-5. Upload a cape .png file and hit save
+3. [Link](https://skinmc.test/en/account/link) your Minecraft account via Microsoft
+4. Go to [Account](https://skinmc.test/en/account/ "Account"), then choose [SkinMC Capes](https://skinmc.test/en/account/capes "SkinMC Capes")
+5. Select a cape .png file and hit upload and use
 
 ## Where to get capes from?
 You can find a large selection of Minecraft capes on the following pages
 - https://skinmc.net
 - https://www.planetminecraft.com/mob-skins/?op2=8
+- Feel free to add more here!
+
+## What format does it support?
+Currently capes must be
+- .png, .jpg, .jpeg
+- 64x32px
+
+## Do you need support?
+Please open a support ticket 
+- https://skinmc.freshdesk.com/support/tickets/new
+
+### Contribute
+Contribute code on GitHub or submit your ideas for future versions!
+- https://github.com/SkinMC
 
 ### Credits
 - Fabric
