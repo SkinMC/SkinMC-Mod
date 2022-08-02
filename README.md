@@ -12,8 +12,8 @@ SkinMC Mod allows players to upload a custom cape using the SkinMC website which
 ## How to get a cape
 1. Go to https://skinmc.net
 2. Sign up / Sign in
-3. [Link](https://skinmc.test/en/account/link) your Minecraft account via Microsoft
-4. Go to [Account](https://skinmc.test/en/account/ "Account"), then choose [SkinMC Capes](https://skinmc.test/en/account/capes "SkinMC Capes")
+3. [Link](https://skinmc.net/en/account/link) your Minecraft account via Microsoft
+4. Go to [Account](https://skinmc.net/en/account/ "Account"), then choose [SkinMC Capes](https://skinmc.net/en/account/capes "SkinMC Capes")
 5. Select a cape .png file and hit upload and use
 
 ## Where to get capes from?
