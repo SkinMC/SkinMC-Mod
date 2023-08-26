@@ -24,7 +24,7 @@ public class PlayerHandler {
         Util.getMainWorkerExecutor().execute(() -> {
             try {
                 String uuid = player.getId().toString();
-                NativeImageBackedTexture nIBT = getCapeFromURL(String.format("https://skinmc.net/en/api/v1/skinmcCape/%s", uuid));
+                NativeImageBackedTexture nIBT = getCapeFromURL(String.format("https://skinmc.net/api/v1/skinmcCape/%s", uuid));
                 Identifier capeTexture = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture("skinmc-capes-" + uuid, nIBT);
                 capes.put(uuid, capeTexture);
                 response.response(capeTexture);
