@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "skinmc_mod",
+  "version": "${version}",
+  "name": "SkinMC Mod",
+  "description": "Wear your custom SkinMC cape in-game. Your style, your cape.",
+  "authors": [
+    "Rux"
+  ],
+  "contact": {
+    "homepage": "https://skinmc.net/",
+    "sources": "https://github.com/SkinMC/"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/skinmc_mod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.skinmc.fabric.SkinMCModFabric"
+    ],
+    "client": [
+      "net.skinmc.fabric.client.SkinMCModFabricClient"
+    ],
+    "modmenu": [
+      "net.skinmc.fabric.client.SkinMCModMenuApi"
+    ]
+  },
+  "mixins": [
+    "skinmc_mod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "architectury": ">=15.0.3",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

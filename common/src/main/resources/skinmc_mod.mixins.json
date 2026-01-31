@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.skinmc.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "PlayerInfoSkinMixin",
+    "FallbackResourceManagerSkinMCMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

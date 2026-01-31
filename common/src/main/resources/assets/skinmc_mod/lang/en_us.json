@@ -1,0 +1,20 @@
+{
+  "skinmc_mod.config.title": "SkinMC Cape Settings",
+  "skinmc_mod.config.cape_display": "Which cape to show",
+  "skinmc_mod.config.shift_right_click_player": "Shift + right-click on player opens profile",
+  "skinmc_mod.cape.skinmc_overrides": "SkinMC overrides (default)",
+  "skinmc_mod.cape.default_only": "Default only (Mojang/OF)",
+  "skinmc_mod.cape.skinmc_only": "SkinMC only",
+  "skinmc_mod.key.category": "SkinMC",
+  "skinmc_mod.key.open_profile": "Open SkinMC Profile",
+  "skinmc_mod.profile.title": "SkinMC Profile",
+  "skinmc_mod.profile.loading": "Loading...",
+  "skinmc_mod.profile.error": "Unable to load profile",
+  "skinmc_mod.profile.xp": "XP: %s",
+  "skinmc_mod.profile.level_xp": "Level %s • %s XP",
+  "skinmc_mod.profile.xp_to_next": "%s / %s to next",
+  "skinmc_mod.profile.country": "Country: %s",
+  "skinmc_mod.profile.online": "Online",
+  "skinmc_mod.profile.open_website": "View on SkinMC",
+  "skinmc_mod.profile.open_website_failed": "Could not open browser"
+}
