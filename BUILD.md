@@ -8,31 +8,49 @@ From the project root:
 ./gradlew clean build
 ```
 
-Output JARs:
+Output JARs (version comes from `gradle.properties` → `mod_version`):
 
-- **Fabric:** `fabric/build/libs/skinmc_mod-fabric-1.0.0.jar`
-- **NeoForge:** `neoforge/build/libs/skinmc_mod-neoforge-1.0.0.jar`
+- **Fabric:** `fabric/build/libs/skinmc_mod-fabric-<version>.jar`
+- **NeoForge:** `neoforge/build/libs/skinmc_mod-neoforge-<version>.jar`
 
-Use these exact files when copying to a mods folder.
+Use these exact files when copying to a mods folder. Do **not** use `-dev-shadow` or `-sources` JARs.
 
-## If you get "non-static callback targets a static method"
+## Making a release (both Fabric and NeoForge)
 
-The mixin callbacks are **static** in the source and in the built JAR. This error means the game is loading an **old** mod JAR that was built before the fix.
+1. **Set the version** in `gradle.properties`:
 
-1. **Clean build**
+   ```properties
+   mod_version = 2.0.0   # e.g. 2.0.0, 2.0.1, 2.1.0
+   ```
+
+2. **Build both platforms** from the project root:
+
    ```bash
    ./gradlew clean build
    ```
 
-2. **Use the new JAR**
-   - Remove **any** existing `skinmc_mod` JAR from your mods folder.
-   - Copy **only** the new file:
-     - Fabric: `fabric/build/libs/skinmc_mod-fabric-1.0.0.jar`
-     - NeoForge: `neoforge/build/libs/skinmc_mod-neoforge-1.0.0.jar`
-   - Do not use `-dev-shadow` or `-sources` JARs.
+3. **Collect the release JARs** (no `-dev-shadow` or `-sources`):
 
-3. **If using Prism Launcher**
-   - Update the mod in the instance: remove the old SkinMC mod, add the new JAR from the paths above (or replace the file in the instance’s `mods` folder).
+   - `fabric/build/libs/skinmc_mod-fabric-<version>.jar`
+   - `neoforge/build/libs/skinmc_mod-neoforge-<version>.jar`
 
-4. **If using Run Client from the IDE**
-   - Use **Build → Rebuild Project** (or run `./gradlew clean :fabric:build`), then run the Fabric/NeoForge client again so it picks up the latest build.
+4. **Create the release** (e.g. on GitHub or your download page):
+
+   - Create a new release / tag (e.g. `v2.0.0`).
+   - In the release notes, say which file is for Fabric and which for NeoForge.
+   - Attach **both** JARs so users can download the one that matches their loader.
+
+   Example release text:
+
+   ```text
+   - **Fabric:** `skinmc_mod-fabric-2.0.0.jar` — use with Fabric loader.
+   - **NeoForge:** `skinmc_mod-neoforge-2.0.0.jar` — use with NeoForge loader.
+   ```
+
+5. **(Optional)** Commit the version bump before or after the release:
+   ```bash
+   git add gradle.properties
+   git commit -m "Release 2.0.0"
+   git tag v2.0.0
+   git push origin main --tags
+   ```

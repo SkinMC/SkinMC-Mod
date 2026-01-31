@@ -11,6 +11,8 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 
 ## Features
 
+![SkinMC Mod Features](https://i.imgur.com/PuAYSru.gif "SkinMC Mod Features")
+
 - Displays your SkinMC cape in-game in singleplayer and multiplayer
 - Choose how capes are shown: SkinMC overrides default capes, default only, or SkinMC only
 - Shift + right-click a player to open their SkinMC profile (optional, can be turned off)
@@ -18,12 +20,12 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 
 ## Configuration
 
-Settings are in **Mod Menu** (Fabric) or the mod list config button (NeoForge), under *SkinMC Cape Settings*. You can also edit `config/skinmc_mod.json`:
+Settings are in **Mod Menu** (Fabric) or the mod list config button (NeoForge), under _SkinMC Cape Settings_. You can also edit `config/skinmc_mod.json`:
 
-| Option | Description |
-|--------|-------------|
-| **Cape display** | *SkinMC overrides (default)* — SkinMC capes replace Mojang/OptiFine capes when set; *Default only* — only show Mojang/OF capes; *SkinMC only* — only show SkinMC capes (hide default when no SkinMC cape) |
-| **Shift + right-click player** | When enabled, shift + right-clicking a player opens their SkinMC profile |
+| Option                         | Description                                                                                                                                                                                               |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cape display**               | _SkinMC overrides (default)_ — SkinMC capes replace Mojang/OptiFine capes when set; _Default only_ — only show Mojang/OF capes; _SkinMC only_ — only show SkinMC capes (hide default when no SkinMC cape) |
+| **Shift + right-click player** | When enabled, shift + right-clicking a player opens their SkinMC profile                                                                                                                                  |
 
 ## How to install it
 
@@ -47,7 +49,6 @@ You can also create your own cape in the [SkinMC Cape Editor](https://skinmc.net
 
 ## Links
 
-- **Cape editor:** https://skinmc.net/capes/editor
 - **Upload a cape:** https://skinmc.net/account/capes
 - **Discord:** https://skinmc.net/go/discord
 
@@ -59,7 +60,6 @@ You can find a large selection of Minecraft capes on the following pages, or mak
 - https://www.planetminecraft.com/mob-skins/?op2=8
 - [SkinMC Cape Editor](https://skinmc.net/capes/editor) — create your own custom cape
 - Feel free to add more here!
-
 
 ## What format does it support?
 
