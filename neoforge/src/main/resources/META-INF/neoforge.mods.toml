@@ -16,21 +16,21 @@ logoFile = "assets/skinmc_mod/icon.png"
 [[dependencies.skinmc_mod]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4,)"
+versionRange = "[21.11.0-beta,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.skinmc_mod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.4,)"
+versionRange = "[1.21.11,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.skinmc_mod]]
 modId = "architectury"
 type = "required"
-versionRange = "[15.0.3,)"
+versionRange = "[19.0.1,)"
 ordering = "AFTER"
 side = "BOTH"
 

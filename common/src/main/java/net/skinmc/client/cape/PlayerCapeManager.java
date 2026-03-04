@@ -1,6 +1,6 @@
 package net.skinmc.client.cape;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.skinmc.SkinMCMod;
 
 import java.net.URI;
@@ -25,28 +25,30 @@ public final class PlayerCapeManager {
     private static final long CACHE_EXPIRE_MS = 30 * 60 * 1000;
 
     private static final String CAPE_PREFIX = "skinmc_cape_";
-    private static final ResourceLocation EMPTY_CAPE_ID = ResourceLocation.fromNamespaceAndPath(SkinMCMod.MOD_ID, "textures/empty_cape");
+    private static final String TEXTURE_PATH_PREFIX = "textures/";
+    private static final String PNG_SUFFIX = ".png";
+    private static final Identifier EMPTY_CAPE_ID = Identifier.fromNamespaceAndPath(SkinMCMod.MOD_ID, "empty_cape");
 
     private final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(TIMEOUT_SEC)).build();
     private final Map<UUID, CacheEntry> cache = new ConcurrentHashMap<>();
-    private final Map<UUID, CompletableFuture<ResourceLocation>> pending = new ConcurrentHashMap<>();
+    private final Map<UUID, CompletableFuture<Identifier>> pending = new ConcurrentHashMap<>();
 
     public static PlayerCapeManager getInstance() { return Holder.INSTANCE; }
     private PlayerCapeManager() {}
 
-    public Optional<ResourceLocation> getCapeTexture(UUID playerUuid) {
+    public Optional<Identifier> getCapeTexture(UUID playerUuid) {
         if (playerUuid == null) return Optional.empty();
         CacheEntry entry = cache.get(playerUuid);
         if (entry != null && entry.expireAt > System.currentTimeMillis()) return Optional.ofNullable(entry.texture);
         if (entry != null) cache.remove(playerUuid);
-        CompletableFuture<ResourceLocation> future = pending.computeIfAbsent(playerUuid, this::fetchCapeAsync);
-        ResourceLocation now = future.getNow(null);
+        CompletableFuture<Identifier> future = pending.computeIfAbsent(playerUuid, this::fetchCapeAsync);
+        Identifier now = future.getNow(null);
         if (now != null) return Optional.of(now);
         if (future.isCompletedExceptionally() || future.isCancelled()) return Optional.empty();
         return Optional.empty();
     }
 
-    public Optional<ResourceLocation> getCapeTextureCachedOnly(UUID playerUuid) {
+    public Optional<Identifier> getCapeTextureCachedOnly(UUID playerUuid) {
         if (playerUuid == null) return Optional.empty();
         CacheEntry entry = cache.get(playerUuid);
         if (entry == null || entry.expireAt <= System.currentTimeMillis()) return Optional.empty();
@@ -58,7 +60,7 @@ public final class PlayerCapeManager {
         pending.computeIfAbsent(playerUuid, this::fetchCapeAsync);
     }
 
-    private CompletableFuture<ResourceLocation> fetchCapeAsync(UUID playerUuid) {
+    private CompletableFuture<Identifier> fetchCapeAsync(UUID playerUuid) {
         String url = API_BASE + "/" + playerUuid;
         HttpRequest.Builder req = HttpRequest.newBuilder().uri(URI.create(url)).timeout(Duration.ofSeconds(TIMEOUT_SEC)).GET();
         if (API_AUTH_HEADER != null && !API_AUTH_HEADER.isBlank()) {
@@ -68,7 +70,7 @@ public final class PlayerCapeManager {
             } else req.header("Authorization", API_AUTH_HEADER);
         }
 
-        CompletableFuture<ResourceLocation> result = new CompletableFuture<>();
+        CompletableFuture<Identifier> result = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             try {
                 HttpResponse<byte[]> r = httpClient.send(req.build(), HttpResponse.BodyHandlers.ofByteArray());
@@ -82,8 +84,8 @@ public final class PlayerCapeManager {
         }).whenComplete((imageBytes, ex) -> {
             if (ex != null) imageBytes = null;
             long expireAt = System.currentTimeMillis() + CACHE_EXPIRE_MS;
-            ResourceLocation id = (imageBytes != null && imageBytes.length > 0)
-                    ? ResourceLocation.fromNamespaceAndPath(SkinMCMod.MOD_ID, CAPE_PREFIX + playerUuid.toString().replace("-", "_"))
+            Identifier id = (imageBytes != null && imageBytes.length > 0)
+                    ? Identifier.fromNamespaceAndPath(SkinMCMod.MOD_ID, CAPE_PREFIX + playerUuid.toString().replace("-", "_"))
                     : null;
             cache.put(playerUuid, new CacheEntry(id, imageBytes, expireAt));
             pending.remove(playerUuid);
@@ -128,25 +130,42 @@ public final class PlayerCapeManager {
         }
     }
 
-    public static ResourceLocation getEmptyCapeTexture() { return EMPTY_CAPE_ID; }
+    public static Identifier getEmptyCapeTexture() { return EMPTY_CAPE_ID; }
 
-    /** For SkinMCCapeResourceProvider: path must be skinmc_cape_<uuid_underscores>. */
-    public byte[] getCapePngBytes(ResourceLocation id) {
-        if (id == null || !SkinMCMod.MOD_ID.equals(id.getNamespace()) || !id.getPath().startsWith(CAPE_PREFIX)) return null;
-        String uuidStr = id.getPath().substring(CAPE_PREFIX.length()).replace('_', '-');
+    /**
+     * For SkinMCCapeResourceProvider and texture lookups:
+     * accepts either "<modid>:skinmc_cape_<uuid>" or "<modid>:textures/skinmc_cape_<uuid>.png".
+     */
+    public byte[] getCapePngBytes(Identifier id) {
+        if (id == null || !SkinMCMod.MOD_ID.equals(id.getNamespace())) return null;
+        String normalizedPath = normalizeCapePath(id.getPath());
+        if (normalizedPath == null) return null;
+        String uuidStr = normalizedPath.substring(CAPE_PREFIX.length()).replace('_', '-');
         UUID uuid;
         try { uuid = UUID.fromString(uuidStr); } catch (IllegalArgumentException e) { return null; }
         CacheEntry entry = cache.get(uuid);
         return (entry != null && entry.expireAt > System.currentTimeMillis() && entry.pngBytes != null) ? entry.pngBytes : null;
     }
 
+    private static String normalizeCapePath(String path) {
+        if (path == null || path.isBlank()) return null;
+        String normalized = path;
+        if (normalized.startsWith(TEXTURE_PATH_PREFIX)) {
+            normalized = normalized.substring(TEXTURE_PATH_PREFIX.length());
+        }
+        if (normalized.endsWith(PNG_SUFFIX)) {
+            normalized = normalized.substring(0, normalized.length() - PNG_SUFFIX.length());
+        }
+        return normalized.startsWith(CAPE_PREFIX) ? normalized : null;
+    }
+
     public void clearCache() { cache.clear(); pending.clear(); }
 
     private static final class CacheEntry {
-        final ResourceLocation texture;
+        final Identifier texture;
         final byte[] pngBytes;
         final long expireAt;
-        CacheEntry(ResourceLocation texture, byte[] pngBytes, long expireAt) { this.texture = texture; this.pngBytes = pngBytes; this.expireAt = expireAt; }
+        CacheEntry(Identifier texture, byte[] pngBytes, long expireAt) { this.texture = texture; this.pngBytes = pngBytes; this.expireAt = expireAt; }
     }
     private static final class Holder { static final PlayerCapeManager INSTANCE = new PlayerCapeManager(); }
 }

@@ -1,7 +1,7 @@
 package net.skinmc.client.cape;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -21,20 +21,38 @@ import java.util.Set;
 public final class SkinMCCapeResourceProvider {
 
     private static final String CAPE_PREFIX = "skinmc_cape_";
+    private static final String TEXTURE_PATH_PREFIX = "textures/";
+    private static final String PNG_SUFFIX = ".png";
 
-    public static Optional<Resource> getCapeResource(ResourceLocation location) {
-        if (location == null || !SkinMCMod.MOD_ID.equals(location.getNamespace()) || !location.getPath().startsWith(CAPE_PREFIX)) {
+    public static Optional<Resource> getCapeResource(Identifier location) {
+        if (location == null || !SkinMCMod.MOD_ID.equals(location.getNamespace())) {
             return Optional.empty();
         }
-        byte[] bytes = PlayerCapeManager.getInstance().getCapePngBytes(location);
+        String normalizedPath = normalizeCapePath(location.getPath());
+        if (normalizedPath == null) return Optional.empty();
+
+        Identifier normalizedId = Identifier.fromNamespaceAndPath(location.getNamespace(), normalizedPath);
+        byte[] bytes = PlayerCapeManager.getInstance().getCapePngBytes(normalizedId);
         if (bytes == null || bytes.length == 0) return Optional.empty();
         return Optional.of(DummyPack.INSTANCE.createResource(() -> new ByteArrayInputStream(bytes)));
+    }
+
+    private static String normalizeCapePath(String path) {
+        if (path == null || path.isBlank()) return null;
+        String normalized = path;
+        if (normalized.startsWith(TEXTURE_PATH_PREFIX)) {
+            normalized = normalized.substring(TEXTURE_PATH_PREFIX.length());
+        }
+        if (normalized.endsWith(PNG_SUFFIX)) {
+            normalized = normalized.substring(0, normalized.length() - PNG_SUFFIX.length());
+        }
+        return normalized.startsWith(CAPE_PREFIX) ? normalized : null;
     }
 
     private enum DummyPack implements PackResources {
         INSTANCE;
 
-        @Override public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) { return null; }
+        @Override public IoSupplier<InputStream> getResource(PackType type, Identifier location) { return null; }
         @Override public void listResources(PackType type, String namespace, String path, ResourceOutput output) {}
         @Override public Set<String> getNamespaces(PackType type) { return Collections.singleton(SkinMCMod.MOD_ID); }
         @Override public <T> T getMetadataSection(MetadataSectionType<T> type) { return null; }

@@ -6,7 +6,7 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 
 ## Requirements
 
-- **Minecraft** 1.21.4
+- **Minecraft** 1.21.5
 - **Fabric** or **NeoForge** (choose one; use the matching mod build)
 
 ## Features

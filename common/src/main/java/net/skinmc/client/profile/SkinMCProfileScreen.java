@@ -7,12 +7,12 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
+import net.minecraft.world.entity.player.PlayerSkin;
 import net.minecraft.world.entity.player.Player;
 
 import java.net.URI;

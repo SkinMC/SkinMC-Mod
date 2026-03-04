@@ -3,7 +3,7 @@ package net.skinmc.client.profile;
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.skinmc.SkinMCMod;
 
 import java.util.UUID;
@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public final class OpenProfilePacket {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SkinMCMod.MOD_ID, "open_profile");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(SkinMCMod.MOD_ID, "open_profile");
 
     public static void registerClientReceiver() {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ID, (buf, context) -> {

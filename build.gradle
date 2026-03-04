@@ -1,5 +1,5 @@
 plugins {
-    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.gradleup.shadow' version '8.3.6' apply false
 }
@@ -50,7 +50,7 @@ subprojects {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.layered() {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2025.03.23@zip")
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2025.12.20@zip")
         }
     }
 

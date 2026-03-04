@@ -4,6 +4,8 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
+import net.skinmc.SkinMCMod;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
@@ -15,7 +17,9 @@ import net.minecraft.world.phys.HitResult;
  */
 public final class SkinMCProfileClient {
 
-    public static final String KEY_CATEGORY = "skinmc_mod.key.category";
+    private static final KeyMapping.Category KEY_CATEGORY = KeyMapping.Category.register(
+            Identifier.fromNamespaceAndPath(SkinMCMod.MOD_ID, "key.category")
+    );
     public static final String KEY_OPEN_PROFILE = "skinmc_mod.key.open_profile";
 
     public static final KeyMapping OPEN_PROFILE_KEY = new KeyMapping(

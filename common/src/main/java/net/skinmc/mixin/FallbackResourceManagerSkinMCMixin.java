@@ -1,6 +1,6 @@
 package net.skinmc.mixin;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.FallbackResourceManager;
 import net.minecraft.server.packs.resources.Resource;
 import net.skinmc.client.cape.SkinMCCapeResourceProvider;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public abstract class FallbackResourceManagerSkinMCMixin {
 
     @Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
-    private void skinmc_mod$serveCapeTexture(ResourceLocation location, CallbackInfoReturnable<Optional<Resource>> cir) {
+    private void skinmc_mod$serveCapeTexture(Identifier location, CallbackInfoReturnable<Optional<Resource>> cir) {
         SkinMCCapeResourceProvider.getCapeResource(location).ifPresent(r -> { cir.setReturnValue(Optional.of(r)); cir.cancel(); });
     }
 }

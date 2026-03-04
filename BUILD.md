@@ -54,3 +54,30 @@ Use these exact files when copying to a mods folder. Do **not** use `-dev-shadow
    git tag v2.0.0
    git push origin main --tags
    ```
+
+## Upgrading Minecraft version (e.g. 1.21.4 → 1.21.5)
+
+1. **`gradle.properties`**
+   - `minecraft_version` = new MC version (e.g. `1.21.5`)
+   - `fabric_api_version` = Fabric API for that MC version (e.g. [Modrinth](https://modrinth.com/mod/fabric-api) or [Fabric API releases](https://modrinth.com/mod/fabric-api/versions))
+   - `neoforge_version` = NeoForge for that MC version (e.g. [NeoForge](https://neoforged.net/) or Maven)
+   - Optionally: `architectury_api_version`, `fabric_loader_version`, `modmenu_version` if newer versions are required
+
+2. **`fabric/src/main/resources/fabric.mod.json`**
+   - In `depends`, set `"minecraft": "~1.21.x"` to the new version
+
+3. **`neoforge/src/main/resources/META-INF/neoforge.mods.toml`**
+   - `versionRange` for `minecraft`: `[1.21.x,)` → new version
+   - `versionRange` for `neoforge`: `[21.x,)` → new NeoForge major version if it changed
+
+4. **`build.gradle`** (root)
+   - If Parchment mappings fail, update the Parchment line in `dependencies` (check [Parchment](https://parchmentmc.org/) or Maven for the correct zip for the new MC version)
+
+5. **`README.md`**
+   - Update the **Requirements** section: Minecraft version
+
+6. **Build and test**
+   ```bash
+   ./gradlew clean build
+   ```
+   Fix any dependency or mapping errors (Architectury, Mod Menu, etc.) by bumping versions in `gradle.properties`.

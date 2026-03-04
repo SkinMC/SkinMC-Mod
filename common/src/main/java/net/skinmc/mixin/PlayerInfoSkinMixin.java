@@ -1,8 +1,9 @@
 package net.skinmc.mixin;
 
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.ClientAsset;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.PlayerSkin;
 import net.skinmc.client.cape.PlayerCapeManager;
 import net.skinmc.client.config.CapeDisplay;
 import net.skinmc.client.config.SkinMCConfig;
@@ -27,15 +28,15 @@ public abstract class PlayerInfoSkinMixin {
         if (original == null) return;
         CapeDisplay display = SkinMCConfig.getCapeDisplay();
         if (!display.useSkinMCCapes()) return;
-        java.util.UUID playerId = getProfile().getId();
+        java.util.UUID playerId = getProfile().id();
         if (playerId == null) return;
 
         PlayerCapeManager manager = PlayerCapeManager.getInstance();
         manager.prefetchCape(playerId);
-        Optional<ResourceLocation> skinMcCape = manager.getCapeTextureCachedOnly(playerId);
-        ResourceLocation capeTexture = null;
+        Optional<Identifier> skinMcCape = manager.getCapeTextureCachedOnly(playerId);
+        Identifier capeTexture = null;
         if (skinMcCape.isPresent()) {
-            ResourceLocation candidate = skinMcCape.get();
+            Identifier candidate = skinMcCape.get();
             if (candidate != null && manager.getCapePngBytes(candidate) != null) capeTexture = candidate;
         }
         if (capeTexture == null && !display.hideDefaultWhenNoSkinMC()) return;
@@ -45,9 +46,10 @@ public abstract class PlayerInfoSkinMixin {
     }
 
     @Unique
-    private static PlayerSkin skinmc_mod$withCape(PlayerSkin skin, ResourceLocation capeTexture) {
+    private static PlayerSkin skinmc_mod$withCape(PlayerSkin skin, Identifier capeTexture) {
         try {
-            return new PlayerSkin(skin.texture(), skin.textureUrl(), capeTexture, skin.elytraTexture(), skin.model(), skin.secure());
+            ClientAsset.Texture capeAsset = capeTexture != null ? new ClientAsset.ResourceTexture(capeTexture) : null;
+            return new PlayerSkin(skin.body(), capeAsset, skin.elytra(), skin.model(), skin.secure());
         } catch (Exception e) {
             return null;
         }

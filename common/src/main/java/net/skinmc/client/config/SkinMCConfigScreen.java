@@ -25,9 +25,11 @@ public class SkinMCConfigScreen extends Screen {
         super.init();
         LinearLayout layout = LinearLayout.vertical().spacing(10);
 
-        capeDisplayButton = CycleButton.<CapeDisplay>builder(value -> Component.translatable(value.getTranslationKey()))
+        capeDisplayButton = CycleButton.<CapeDisplay>builder(
+                        value -> Component.translatable(value.getTranslationKey()),
+                        SkinMCConfig.getCapeDisplay()
+                )
                 .withValues(CapeDisplay.values())
-                .withInitialValue(SkinMCConfig.getCapeDisplay())
                 .create(0, 0, 210, 20, Component.translatable("skinmc_mod.config.cape_display"), (button, value) -> {
                     SkinMCConfig.setCapeDisplay(value);
                     SkinMCConfig.save();
