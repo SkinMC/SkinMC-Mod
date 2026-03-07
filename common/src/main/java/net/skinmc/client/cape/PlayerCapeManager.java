@@ -51,12 +51,19 @@ public final class PlayerCapeManager {
     public Optional<Identifier> getCapeTextureCachedOnly(UUID playerUuid) {
         if (playerUuid == null) return Optional.empty();
         CacheEntry entry = cache.get(playerUuid);
-        if (entry == null || entry.expireAt <= System.currentTimeMillis()) return Optional.empty();
+        if (entry == null) return Optional.empty();
+        if (entry.expireAt <= System.currentTimeMillis()) {
+            cache.remove(playerUuid, entry);
+            return Optional.empty();
+        }
         return Optional.ofNullable(entry.texture);
     }
 
     public void prefetchCape(UUID playerUuid) {
-        if (playerUuid == null || cache.containsKey(playerUuid)) return;
+        if (playerUuid == null) return;
+        CacheEntry entry = cache.get(playerUuid);
+        if (entry != null && entry.expireAt > System.currentTimeMillis()) return;
+        if (entry != null) cache.remove(playerUuid, entry);
         pending.computeIfAbsent(playerUuid, this::fetchCapeAsync);
     }
 

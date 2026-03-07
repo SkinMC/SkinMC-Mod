@@ -82,7 +82,7 @@ public class SkinMCProfileScreen extends Screen {
 
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
-        renderBackground(gui, mouseX, mouseY, partialTick);
+        renderTransparentBackground(gui);
         super.render(gui, mouseX, mouseY, partialTick);
 
         int left = PADDING;
