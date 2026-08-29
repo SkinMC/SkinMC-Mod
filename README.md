@@ -15,6 +15,7 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 ![SkinMC Mod Features](https://i.imgur.com/PuAYSru.gif "SkinMC Mod Features")
 
 - Displays your SkinMC cape in-game in singleplayer and multiplayer
+- Refreshes equipped SkinMC capes automatically (~60 sec) after they are changed online with no game restart required
 - Choose how capes are shown: SkinMC overrides default capes, default only, or SkinMC only
 - Shift + right-click a player to open their SkinMC profile (optional, can be turned off)
 - Works on both **Fabric** and **NeoForge**
@@ -74,6 +75,10 @@ Currently capes must be
 Contribute code on GitHub or submit your ideas for future versions!
 
 - https://github.com/SkinMC
+
+### Namet.ag data contribution
+
+SkinMC relies on Namet.ag for player profile data. While Minecraft loads player skins, the mod contributes the Mojang-signed public texture value and signature it already received to Namet.ag. It does not send access tokens, server addresses, or IP addresses.
 
 ## License
 

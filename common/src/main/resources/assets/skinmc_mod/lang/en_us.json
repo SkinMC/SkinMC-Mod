@@ -1,7 +1,8 @@
 {
   "skinmc_mod.config.title": "SkinMC Cape Settings",
-  "skinmc_mod.config.cape_display": "Which cape to show",
-  "skinmc_mod.config.shift_right_click_player": "Shift + right-click on player opens profile",
+  "skinmc_mod.config.cape_display": "Cape display",
+  "skinmc_mod.config.shift_right_click_player": "Shift + right-click player profiles",
+  "skinmc_mod.config.change_cape": "Change cape",
   "skinmc_mod.cape.skinmc_overrides": "SkinMC overrides (default)",
   "skinmc_mod.cape.default_only": "Default only (Mojang/OF)",
   "skinmc_mod.cape.skinmc_only": "SkinMC only",

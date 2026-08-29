@@ -18,7 +18,7 @@ public final class SkinMCModFabricClient implements ClientModInitializer {
         SkinMCConfig.setConfigPath(FabricLoader.getInstance().getConfigDir().resolve("skinmc_mod.json"));
         SkinMCConfig.load();
 
-        PlayerCapeManager.getInstance();
+        PlayerCapeManager.getInstance().initialize();
         SkinMCProfileClient.init();
         OpenProfilePacket.registerClientReceiver();
 

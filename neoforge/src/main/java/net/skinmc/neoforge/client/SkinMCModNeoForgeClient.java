@@ -37,7 +37,7 @@ public final class SkinMCModNeoForgeClient {
             );
         }
 
-        PlayerCapeManager.getInstance();
+        PlayerCapeManager.getInstance().initialize();
         SkinMCProfileClient.init();
         OpenProfilePacket.registerClientReceiver();
 
