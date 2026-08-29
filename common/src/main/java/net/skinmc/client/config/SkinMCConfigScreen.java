@@ -1,6 +1,6 @@
 package net.skinmc.client.config;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
@@ -76,14 +76,14 @@ public class SkinMCConfigScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
-        renderTransparentBackground(gui);
-        gui.drawCenteredString(font, title, width / 2, Math.max(20, (height - 150) / 2), 0xFF_FF_FF_FF);
-        gui.drawString(font, Component.translatable("skinmc_mod.config.cape_display"),
+    public void extractRenderState(GuiGraphicsExtractor gui, int mouseX, int mouseY, float partialTick) {
+        extractTransparentBackground(gui);
+        gui.centeredText(font, title, width / 2, Math.max(20, (height - 150) / 2), 0xFF_FF_FF_FF);
+        gui.text(font, Component.translatable("skinmc_mod.config.cape_display"),
                 contentLeft, capeDisplayLabelY, 0xFF_AA_AA_AA, false);
-        gui.drawString(font, Component.translatable("skinmc_mod.config.shift_right_click_player"),
+        gui.text(font, Component.translatable("skinmc_mod.config.shift_right_click_player"),
                 contentLeft, profileShortcutLabelY, 0xFF_AA_AA_AA, false);
-        super.render(gui, mouseX, mouseY, partialTick);
+        super.extractRenderState(gui, mouseX, mouseY, partialTick);
     }
 
     private void openCapePage() {
@@ -91,7 +91,7 @@ public class SkinMCConfigScreen extends Screen {
             Util.getPlatform().openUri(CAPES_URI);
         } catch (Exception e) {
             if (minecraft != null) {
-                minecraft.getChatListener().handleSystemMessage(
+                minecraft.gui.chatListener().handleSystemMessage(
                         Component.translatable("skinmc_mod.profile.open_website_failed"), false);
             }
         }
@@ -101,7 +101,7 @@ public class SkinMCConfigScreen extends Screen {
     public void onClose() {
         SkinMCConfig.save();
         if (minecraft != null) {
-            minecraft.setScreen(parent);
+            minecraft.gui.setScreen(parent);
         }
     }
 }

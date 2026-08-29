@@ -6,7 +6,7 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 
 ## Requirements
 
-- **Minecraft** 1.21.11
+- **Minecraft** 26.2
 - **Fabric** or **NeoForge** (choose one; use the matching mod build)
 - https://modrinth.com/mod/architectury-api
 
@@ -18,6 +18,7 @@ Create your cape on SkinMC. Wear it in-game with the SkinMC Mod.
 - Refreshes equipped SkinMC capes automatically (~60 sec) after they are changed online with no game restart required
 - Choose how capes are shown: SkinMC overrides default capes, default only, or SkinMC only
 - Shift + right-click a player to open their SkinMC profile (optional, can be turned off)
+- Open profiles with the `P` key or `/skinmc [player]`, even on servers that do not run the mod
 - Works on both **Fabric** and **NeoForge**
 
 ## Configuration

@@ -10,7 +10,6 @@ import net.skinmc.client.cape.PlayerCapeManager;
 import net.skinmc.client.config.SkinMCConfig;
 import net.skinmc.client.profile.SkinMCProfileClient;
 import net.skinmc.client.profile.SkinMCProfileScreen;
-import net.skinmc.client.profile.OpenProfilePacket;
 
 public final class SkinMCModFabricClient implements ClientModInitializer {
     @Override
@@ -20,7 +19,6 @@ public final class SkinMCModFabricClient implements ClientModInitializer {
 
         PlayerCapeManager.getInstance().initialize();
         SkinMCProfileClient.init();
-        OpenProfilePacket.registerClientReceiver();
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (world.isClientSide() && SkinMCConfig.isEnableShiftRightClickPlayer() && player.isShiftKeyDown() && entity instanceof Player target) {

@@ -4,6 +4,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.skinmc.SkinMCMod;
+import net.skinmc.client.http.SkinMCHttpClients;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -44,7 +45,7 @@ public final class PlayerCapeManager {
     private static final String PNG_SUFFIX = ".png";
     private static final Identifier EMPTY_CAPE_ID = Identifier.fromNamespaceAndPath(SkinMCMod.MOD_ID, "empty_cape");
 
-    private final HttpClient httpClient = HttpClient.newBuilder()
+    private final HttpClient httpClient = SkinMCHttpClients.newBuilder()
             .connectTimeout(CONNECT_TIMEOUT)
             .followRedirects(HttpClient.Redirect.NEVER)
             .build();

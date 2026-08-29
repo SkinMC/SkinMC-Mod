@@ -1,7 +1,8 @@
 package net.skinmc.client.profile;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.PlayerFaceExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.client.gui.screens.Screen;
@@ -49,7 +50,7 @@ public class SkinMCProfileScreen extends Screen {
         if (player == null) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc != null) {
-            mc.execute(() -> mc.setScreen(new SkinMCProfileScreen(player.getUUID(), player.getName().getString())));
+            mc.execute(() -> mc.gui.setScreen(new SkinMCProfileScreen(player.getUUID(), player.getName().getString())));
         }
     }
 
@@ -81,48 +82,48 @@ public class SkinMCProfileScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
-        renderTransparentBackground(gui);
-        super.render(gui, mouseX, mouseY, partialTick);
+    public void extractRenderState(GuiGraphicsExtractor gui, int mouseX, int mouseY, float partialTick) {
+        extractTransparentBackground(gui);
+        super.extractRenderState(gui, mouseX, mouseY, partialTick);
 
         int left = PADDING;
         int top = PADDING;
 
         if (loading) {
-            gui.drawCenteredString(font, Component.translatable("skinmc_mod.profile.loading"), width / 2, height / 2 - 10, 0xFF_FF_FF_FF);
+            gui.centeredText(font, Component.translatable("skinmc_mod.profile.loading"), width / 2, height / 2 - 10, 0xFF_FF_FF_FF);
             return;
         }
         if (error) {
-            gui.drawCenteredString(font, Component.translatable("skinmc_mod.profile.error"), width / 2, height / 2 - 10, 0xFF_FF_55_55);
+            gui.centeredText(font, Component.translatable("skinmc_mod.profile.error"), width / 2, height / 2 - 10, 0xFF_FF_55_55);
             return;
         }
         if (profile == null) return;
 
         PlayerSkin skin = getSkinFor(playerUuid);
         if (skin != null) {
-            net.minecraft.client.gui.components.PlayerFaceRenderer.draw(gui, skin, left, top, AVATAR_SIZE);
+            PlayerFaceExtractor.extractRenderState(gui, skin, left, top, AVATAR_SIZE);
         }
 
         int textLeft = left + AVATAR_SIZE + PADDING;
         int textTop = top;
         String name = profile.getUsername().isEmpty() ? fallbackName : profile.getUsername();
-        gui.drawString(font, name, textLeft, textTop, 0xFF_FF_FF_FF);
+        gui.text(font, name, textLeft, textTop, 0xFF_FF_FF_FF);
         int nameEndX = textLeft + font.width(name);
         if (profile.isVerified()) {
-            gui.drawString(font, "\u2713", nameEndX + 4, textTop, 0xFF_55_FF_55, false);
+            gui.text(font, "\u2713", nameEndX + 4, textTop, 0xFF_55_FF_55, false);
             nameEndX += font.width("\u2713") + 4;
         }
         if (profile.isOnline()) {
-            gui.drawString(font, Component.translatable("skinmc_mod.profile.online"), nameEndX + 4, textTop, 0xFF_55_FF_55, false);
+            gui.text(font, Component.translatable("skinmc_mod.profile.online"), nameEndX + 4, textTop, 0xFF_55_FF_55, false);
         }
         if (!profile.getRole().isEmpty()) {
-            gui.drawString(font, profile.getRole(), textLeft, textTop + font.lineHeight + 2, 0xFF_88_AA_FF, false);
+            gui.text(font, profile.getRole(), textLeft, textTop + font.lineHeight + 2, 0xFF_88_AA_FF, false);
         }
 
         int bioY = textTop + font.lineHeight + (profile.getRole().isEmpty() ? 4 : font.lineHeight + 6);
         for (int i = 0; i < Math.min(bioLines.size(), BIO_MAX_LINES); i++) {
             FormattedCharSequence seq = net.minecraft.locale.Language.getInstance().getVisualOrder(bioLines.get(i));
-            gui.drawString(font, seq, textLeft, bioY + i * (font.lineHeight + 2), 0xFF_AA_AA_AA, false);
+            gui.text(font, seq, textLeft, bioY + i * (font.lineHeight + 2), 0xFF_AA_AA_AA, false);
         }
 
         int xpY = bioY + BIO_MAX_LINES * (font.lineHeight + 2) + 8;
@@ -130,9 +131,9 @@ public class SkinMCProfileScreen extends Screen {
         double progress = profile.getXpProgress();
         PlayerProfile.XpInfo xpInfo = profile.getXpInfo();
         if (xpInfo != null && xpInfo.getCurrentLevelId() > 0) {
-            gui.drawString(font, Component.translatable("skinmc_mod.profile.level_xp", xpInfo.getCurrentLevelId(), xpInfo.getTotal()), xpLabelX, xpY, 0xFF_CC_CC_CC);
+            gui.text(font, Component.translatable("skinmc_mod.profile.level_xp", xpInfo.getCurrentLevelId(), xpInfo.getTotal()), xpLabelX, xpY, 0xFF_CC_CC_CC);
             if (xpInfo.getXpNeededForNextLevel() > 0) {
-                gui.drawString(font, Component.translatable("skinmc_mod.profile.xp_to_next", xpInfo.getXpInCurrentLevel(), xpInfo.getXpNeededForNextLevel()), xpLabelX + XP_BAR_WIDTH + 6, xpY + font.lineHeight / 2 - 2, 0xFF_AA_AA_AA, false);
+                gui.text(font, Component.translatable("skinmc_mod.profile.xp_to_next", xpInfo.getXpInCurrentLevel(), xpInfo.getXpNeededForNextLevel()), xpLabelX + XP_BAR_WIDTH + 6, xpY + font.lineHeight / 2 - 2, 0xFF_AA_AA_AA, false);
             }
         }
         int xpBarX = textLeft;
@@ -146,7 +147,7 @@ public class SkinMCProfileScreen extends Screen {
         String countryDisplay = profile.getCountryDisplayName();
         if (!countryDisplay.isEmpty()) {
             int countryY = xpBarY + XP_BAR_HEIGHT + 6;
-            gui.drawString(font, Component.translatable("skinmc_mod.profile.country", countryDisplay), textLeft, countryY, 0xFF_88_88_88);
+            gui.text(font, Component.translatable("skinmc_mod.profile.country", countryDisplay), textLeft, countryY, 0xFF_88_88_88);
         }
     }
 
@@ -158,7 +159,7 @@ public class SkinMCProfileScreen extends Screen {
             Util.getPlatform().openUri(URI.create(url));
         } catch (Exception e) {
             if (minecraft != null) {
-                minecraft.getChatListener().handleSystemMessage(
+                minecraft.gui.chatListener().handleSystemMessage(
                         Component.translatable("skinmc_mod.profile.open_website_failed"), false);
             }
         }
@@ -183,6 +184,6 @@ public class SkinMCProfileScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (minecraft != null) minecraft.setScreen(null);
+        if (minecraft != null) minecraft.gui.setScreen(null);
     }
 }

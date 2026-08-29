@@ -1,38 +1,40 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 #issueTrackerURL = "https://github.com/SkinMC/issues"
-license = "Insert License Here"
+license = "LGPL-2.1-only"
 
 [[mods]]
 modId = "skinmc_mod"
 version = "${version}"
 displayName = "SkinMC Mod"
 authors = "Rux"
+displayURL = "https://skinmc.net/"
+displayTest = "IGNORE_ALL_VERSION"
 description = '''
 Wear your custom SkinMC cape in-game. Your style, your cape.
 '''
-logoFile = "assets/skinmc_mod/icon.png"
+iconFile = "assets/skinmc_mod/icon.png"
 
 [[dependencies.skinmc_mod]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.11.0-beta,)"
+versionRange = "[26.2.0.62,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.skinmc_mod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.11,)"
+versionRange = "[26.2,26.3)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.skinmc_mod]]
 modId = "architectury"
 type = "required"
-versionRange = "[19.0.1,)"
+versionRange = "[21.0.7,)"
 ordering = "AFTER"
-side = "BOTH"
+side = "CLIENT"
 
 [[mixins]]
 config = "skinmc_mod.mixins.json"

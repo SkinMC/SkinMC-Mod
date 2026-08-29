@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.skinmc.SkinMCMod;
+import net.skinmc.client.http.SkinMCHttpClients;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -54,7 +55,7 @@ public final class NametagProfileIngestor {
     }
 
     private NametagProfileIngestor() {
-        httpClient = HttpClient.newBuilder()
+        httpClient = SkinMCHttpClients.newBuilder()
                 .connectTimeout(CONNECT_TIMEOUT)
                 .followRedirects(HttpClient.Redirect.NEVER)
                 .build();

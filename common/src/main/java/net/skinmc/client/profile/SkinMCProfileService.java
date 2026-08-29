@@ -1,6 +1,7 @@
 package net.skinmc.client.profile;
 
 import net.skinmc.SkinMCMod;
+import net.skinmc.client.http.SkinMCHttpClients;
 
 import java.net.URI;
 
@@ -24,7 +25,7 @@ public final class SkinMCProfileService {
     private static final int TIMEOUT_SEC = 10;
     private static final long CACHE_EXPIRE_MS = 60_000;
 
-    private final HttpClient httpClient = HttpClient.newBuilder()
+    private final HttpClient httpClient = SkinMCHttpClients.newBuilder()
             .connectTimeout(Duration.ofSeconds(TIMEOUT_SEC))
             .build();
     private final Map<UUID, CacheEntry> cache = new ConcurrentHashMap<>();
@@ -42,7 +43,9 @@ public final class SkinMCProfileService {
         if (entry != null && entry.expireAt > System.currentTimeMillis())
             return CompletableFuture.completedFuture(entry.profile);
         if (entry != null) cache.remove(playerUuid);
-        return pending.computeIfAbsent(playerUuid, this::fetchAsync);
+        CompletableFuture<PlayerProfile> result = pending.computeIfAbsent(playerUuid, this::fetchAsync);
+        result.whenComplete((profile, error) -> pending.remove(playerUuid, result));
+        return result;
     }
 
     public PlayerProfile getCachedOnly(UUID playerUuid) {
@@ -61,21 +64,15 @@ public final class SkinMCProfileService {
                 .build();
 
         CompletableFuture<PlayerProfile> result = new CompletableFuture<>();
-        CompletableFuture.supplyAsync(() -> {
-            try {
-                HttpResponse<String> r = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                if (r.statusCode() != 200) return null;
-                String body = r.body();
-                return body != null ? parsePassport(body, playerUuid) : null;
-            } catch (Exception e) {
-                SkinMCMod.LOGGER.warn("[SkinMC Profile] Fetch failed {}: {}", playerUuid, e.getMessage());
-                return null;
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).whenComplete((response, error) -> {
+            PlayerProfile profile = null;
+            if (error == null && response != null && response.statusCode() == 200 && response.body() != null) {
+                profile = parsePassport(response.body(), playerUuid);
+            } else if (error != null) {
+                SkinMCMod.LOGGER.warn("[SkinMC Profile] Fetch failed {}: {}", playerUuid, error.getMessage());
             }
-        }).whenComplete((profile, ex) -> {
-            if (ex != null) profile = null;
             long expireAt = System.currentTimeMillis() + CACHE_EXPIRE_MS;
             cache.put(playerUuid, new CacheEntry(profile, expireAt));
-            pending.remove(playerUuid);
             result.complete(profile);
         });
         return result;

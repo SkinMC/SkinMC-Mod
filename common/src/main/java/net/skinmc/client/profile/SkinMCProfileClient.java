@@ -1,11 +1,13 @@
 package net.skinmc.client.profile;
 
 import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 import net.skinmc.SkinMCMod;
+import net.skinmc.commands.SkinMCCommands;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
@@ -31,6 +33,8 @@ public final class SkinMCProfileClient {
 
     public static void init() {
         KeyMappingRegistry.register(OPEN_PROFILE_KEY);
+        ClientCommandRegistrationEvent.EVENT.register((dispatcher, context) ->
+                SkinMCCommands.register(dispatcher));
         ClientTickEvent.CLIENT_POST.register(minecraft -> {
             while (OPEN_PROFILE_KEY.consumeClick()) {
                 openProfileForCurrentTarget(minecraft);
